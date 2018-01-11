@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Account {% endblock %}
+
+{% block content %}
+
+<div class="form-wrap">
+    <div class="col-md-6 col-md-offset-3">
+        <legend>Basic Information</legend>
+        {% include '_partials/messages.html' %}
+
+        <div class="row">
+        <form action="{% url 'create_account' %}" method="post" accept-charset="utf-8" class="form" role="form">
+            {% csrf_token %}
+            <label>Enter desired username</label>
+            <input type="text" name="username" value="{{ the_user.first_name }}" class="form-control" placeholder="GoTigers666" required />
+            <label>First Name</label>
+            <input type="text" name="first_name" value="{{ the_user.first_name }}" class="form-control" placeholder="First Name" required />
+            <label>Last Name</label>
+            <input type="text" name="last_name" value="{{ the_user.last_name }}" class="form-control" placeholder="Last Name" required />
+            <label>Email</label>
+            <input type="text" name="email" value="{{ the_user.email }}" class="form-control" placeholder="Email" required />
+
+            <br>
+
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ the_user.phone }}" class="form-control" placeholder="Phone" required />
+
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control password" placeholder="Password"  required = "" />
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" class="form-control confirm-password" placeholder="Confirm Password" required = "" />
+                    <br>
+                </div>
+            </div>
+
+        <div class="col-md-6 col-md-offset-3">
+        <legend>Medical Information</legend>
+            <div class="row">
+                    <label>Please provide your height and weight.</label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="number" name="height" value="{{ requested_user.height }}" class="form-control" placeholder="Height"  />
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="number" name="weight" value="{{ requested_user.weight }}" class="form-control" placeholder="Weight" />
+                        </div>
+                    </div>
+                    <br>
+                    <label>Sex</label><br>
+                         <div class="radio-inline">
+                             <label>
+                                <input type="radio" name="sex" value="Male" class="form-control" />
+                                Male
+                             </label>
+                         </div>
+
+                         <div class="radio-inline">
+                             <label>
+                                <input type="radio" name="sex"  value="Female" class="form-control" />
+                                Female
+                             </label>
+                         </div>
+                    <br><br>
+                    <label>Current Medications</label>
+                        <input type="text" name="medications" value="{{ requested_user.medical_information.medications }}" class="form-control" placeholder="Please list any prescription or over the counter drugs you are curretly taking." />
+                    <br>
+                    <label>Allergies</label>
+                        <input type="text" name="allergies" value="{{ requested_user.medical_information.allergies }}" class="form-control" placeholder="Please list any allergies you suffer from."  />
+                    <br>
+                    <label>Existing Medical Conditions</label>
+                        <input type="text" name="medical_conditions" value="{{ requested_user.medical_information.medical_conditions }}" class="form-control" placeholder="Please list any medical conditions you currently suffer from."  />
+                    <br>
+                    <label>Family History</label>
+                        <input type="text" name="family_history" value="{{ requested_user.medical_information.family_history }}" class="form-control" placeholder="Please list any diseases that tend to run in your family."  />
+                    <br>
+                    <label>Additional Information</label>
+                        <input type="text" name="additional_info" value="{{ requested_user.medical_information.additional_info }}" class="form-control" placeholder="Please provide any additional information or comments you wish to include."  />
+                    <br>
+                    <label>Primary Hospital</label>
+                    <select name="primary_hospital" class="form-control" required>
+                        <option value="" selected>Select Your Hospital</option>
+                        {% for hospital in hospitals %}
+                            <option value={{ hospital.hospital_id }}>{{ hospital.name }}</option>
+                        {% endfor %}
+                    </select>
+                <br>
+            </div>
+         </div>
+         <div class="col-md-6 col-md-offset-3">
+         <legend>Insurance Information</legend>
+            <div class="row">
+                <label>Policy Number</label>
+                <input type="number" name="policy_number" value="{{ requested_user.height }}" class="form-control" placeholder="Policy Number" />
+                <label>Company</label>
+                <input type="text" name="company" value="{{ requested_user.height }}" class="form-control" placeholder="Company" />
+            </div>
+        </div>
+        <br>
+        <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <legend></legend>
+            <div class="row">
+                <button class="btn btn-primary" type="submit">Sign Up</button>
+            </div>
+        </div>
+        </div>
+
+</div>
+{% endblock %}

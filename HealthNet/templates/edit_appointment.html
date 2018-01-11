@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Appointment {% endblock %}
+
+{% block content %}
+<a href="{% url 'view_appointments' %}"><button class="btn btn-primary" type="submit"><< Back to View Appointments</button></a>
+    <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'edit_appointment' id=appointment.id %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% include '_partials/messages.html' %}
+                {% csrf_token %}
+
+                <legend>Edit an Appointment</legend>
+
+                {% if the_user.userprofile.is_doctor %}
+                    <label>Change Patient</label>
+                    <select name="patient" class="form-control"  >
+                        <option value="{{ appointment.patient.pk }}" selected>{{ appointment.patient.get_full_name }}</option>
+                        {% for user in users %}
+                            {% if user.userprofile.is_patient %}
+                                <option value="{{ user.pk }}">{{ user.userprofile.get_full_name }}</option>
+                            {% endif%}
+                        {% endfor %}
+                    </select>
+                {% elif the_user.userprofile.is_patient %}
+                    <label>Change Doctor</label>
+                    <select name="doctor" class="form-control"  >
+                        <option value="{{ appointment.doctor.pk }}" selected>{{ appointment.doctor.get_full_name }}</option>
+                        {% for user in users %}
+                            {% if user.userprofile.is_doctor %}
+                                <option value="{{ user.pk }}">{{ user.userprofile.get_full_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                <br>
+
+                <label>This appointment is scheduled for {{ appointment.date }}</label>
+                <label>(Please leave these fields blank if you do not wish to make changes.)</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class='input-group' id='datetimepicker'>
+                                <input type='date' class="form-control" name="date" placeholder="{{ appointment.date }}" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group' id='datetimepicker'>
+                                <input type='time' class="form-control" name="time" placeholder="{{ appointment.time }}" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <h4>Notes</h4>
+                                <textarea name="notes" rows="10" cols="75">{{ appointment.notes }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-md-4">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+
+                </div>
+                <br>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Cancel Appointment {% endblock %}
+
+{% block content %}
+<a href="{% url 'view_appointments' %}"><button class="btn btn-primary" type="submit"> << Back to View Appointments </button></a>
+
+
+ <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'cancel_appointment' id=appointment.id%}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% csrf_token %}
+                <legend>Are you sure you wish to cancel this appointment?</legend>
+                {{appointment}}
+                <br><br>
+                <button class="btn btn-danger" type="submit">Yes</button>
+            </form>
+        </div>
+ </div>
+
+
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Transfer Patient {% endblock %}
+{% block extra %}
+    <link rel="stylesheet" href="{% static 'admit_patient.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% if all_stays %}
+        <div class="col-md-4 col-md-offset-1">
+            <legend>All Patients</legend>
+
+            {% for stay in all_stays %}
+                <form action="{% url 'patient_transfer_with_id' id=stay.id %}" method="post" accept-charset="utf-8" class="form" role="form">
+                    {% csrf_token %}
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ stay.patient.user.last_name }}, {{stay.patient.user.first_name}}</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>Admitted:</label>
+                            {{ stay.admission }}
+
+                            <br>
+
+                            <label>Hospital:</label>
+                            {{ stay.hospital.name }}
+
+                            <br>
+
+                            <label>Doctor:</label>
+                            {{ stay.doctor.get_full_name }}
+
+                            <br>
+
+                            <label>Nurse:</label>
+                            {{ stay.nurse.get_full_name }}
+
+                        </div>
+                    </div>
+
+                    {% if user.userprofile.is_doctor or user.userprofile.is_admin%}
+                        <select name="transfer_to" class="form-control" required>
+                        <option value="" selected>Select Your Hospital</option>
+                        {% for hospital in your_hospitals %}
+                            <option value={{ hospital.hospital.hospital_id }}>{{ hospital.hospital.name }}</option>
+                        {% endfor %}
+                        </select>
+                        <input type="hidden" name="patient_id" value="{{ stay.patient.id }}"/>
+                        <input type="hidden" name="transfer_from" value="{{ stay.hospital.hospital_id }}"/>
+                        <br>
+                        <button class="btn btn-success" value="transfer_patient" type="submit">Transfer</button>
+                        <br>
+                    {% endif %}
+                    <br>
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">There are no patients from other hospitals needing to be transferred at the time</h3>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

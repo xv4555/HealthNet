@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %} System Statistics {% endblock %}
+
+{% block content %}
+    <div class="form-wrap">
+        <div class="col-md-3 col-md-offset-5">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Patients in hospital</h3>
+                </div>
+                <div class="panel-body">
+                    <center><b>{{ num_patients_in_hospital }}</b> patients</center>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Average number of visits</h3>
+                </div>
+                <div class="panel-body">
+                    <center><b>{{ avg_num_visits }}</b> visit(s)</center>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Average duration of stay</h3>
+                </div>
+                <div class="panel-body">
+                    <center><b>{{ avg_time }}</b> Minutes</center>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Patients receiving prescriptions</h3>
+                </div>
+                <div class="panel-body">
+                    <center><b>{{ patients_receiving_prescriptions }}</b> patient(s)</center>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

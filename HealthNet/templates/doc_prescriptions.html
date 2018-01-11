@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Prescriptions {% endblock %}
+{% block extra %}
+    <link rel="stylesheet" href="{% static 'admit_patient.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-3 col-md-offset-1">
+        {% if user.userprofile.is_doctor %}
+            <legend>All Prescriptions</legend>
+            {% for prescription in prescriptions %}
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ prescription.name }}</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>Patient:</label>
+                            {{ prescription.patient.get_full_name }}
+
+                            <br>
+
+                            <label>Doctor:</label>
+                            {{ prescription.doctor.get_full_name }}
+
+                            <br>
+
+                            <label>Dosage:</label>
+                            {{ prescription.dosage }}
+
+                            <br>
+
+                            <label>Description:</label>
+                            {{ prescription.description }}
+
+                            <br>
+
+                            <label>Instructions:</label>
+                            {{ prescription.instructions }}
+
+                            <br>
+                            <label>Notes:</label>
+                            {{ prescription.notes }}
+
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
+
+    {% if your_prescriptions %}
+        <div class="col-md-3 col-md-offset-1">
+            <legend>Your Prescriptions</legend>
+
+            {% for prescription in your_prescriptions %}
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ prescription.name }}</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <label>Patient:</label>
+                        {{ prescription.patient.get_full_name }}
+
+                        <br>
+
+                        <label>Doctor:</label>
+                        {{ prescription.doctor.get_full_name }}
+
+                        <br>
+
+                        <label>Dosage:</label>
+                        {{ prescription.dosage }}
+
+                        <br>
+
+                        <label>Description:</label>
+                        {{ prescription.description }}
+
+                        <br>
+
+                        <label>Instructions:</label>
+                        {{ prescription.instructions }}
+
+                        <br>
+                        <label>Notes:</label>
+                        {{ prescription.notes }}
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="col-md-3 col-md-offset-1">
+        <legend>New Prescription</legend>
+        <form action="{% url 'prescriptions' %}" method="post" accept-charset="utf-8" class="form" role="form">
+            {% csrf_token %}
+            <label>Patient</label>
+            <select name="patient" class="form-control" required>
+                <option value="" selected>Select Patient</option>
+                {% for user in patients %}
+                    <option value="{{ user.id }}">{{ user.user.get_full_name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Name</label>
+            <input type="text" name="name" class="form-control" required />
+
+            <label>Description</label>
+            <input type="textbox" name="description" class="form-control" required />
+            <br>
+
+            <label>Instructions</label>
+            <input type="textbox" name="instructions" class="form-control" required />
+            <br>
+
+            <label>Notes</label>
+            <input type="textbox" name="notes" class="form-control" />
+            <br>
+
+            <label>Dosage</label>
+            <input type="textbox" name="dosage" class="form-control" />
+            <br>
+
+            <div class="row">
+                <input type="submit" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+
+{% endblock %}

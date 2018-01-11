@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} Delete Message {% endblock %}
+
+{% block content %}
+<a href="{% url 'view_message' message_id=msg.id %}"><button class="btn btn-primary" type="submit"> << Back to View Message </button></a>
+
+
+ <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'delete_message' message_id=msg.id %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% csrf_token %}
+                <legend>Are you sure you wish to delete this message permanently?</legend>
+                {{ msg }}
+                <br><br>
+                <button class="btn btn-danger" type="submit"> Yes </button>
+            </form>
+        </div>
+ </div>
+
+
+{% endblock %}

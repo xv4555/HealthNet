@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block extra %}
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% include '_partials/messages.html' %}
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="form-wrap">
+                <div id="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <form id="sign-in" action="{% url 'user_login' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                            <div><span class="pulsate">
+                    <h1 >health<b>Net</b></h1>
+                    </span></div>
+                            <label class="jumbotron-element">Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="Username" required autofocus />
+                            <br>
+                            <label class="jumbotron-element">Enter Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Password" required/>
+                            <br>
+                            <button class="btn btn-primary" type="submit">Sign In</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <!-- Example row of columns -->
+
+        <div class="col-md-6 col-md-offset-3">
+            <h2>New Patients</h2>
+            <p>If you are a new patient who needs to create an account, please follow the link below. Be prepared to provide your information.</p>
+            <a class="btn btn-success" href="{% url 'create_account' %}" role="button">Create Account</a>
+        </div>
+
+    </div>
+    <hr>
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="emergency">
+            <footer>
+                health<strong>Net</strong> &copy; is not an emergency service.
+                In case of emergency, please call <strong>911</strong> or go to your nearest emergency room.
+            </footer>
+        </div>
+    </div>
+
+{% endblock %}

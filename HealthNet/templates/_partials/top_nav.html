@@ -1,0 +1,97 @@
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'base_dashboard' %}">health<strong>Net</strong></a>
+            {% else %}
+                <a class="navbar-brand" href="{% url 'user_login' %}">health<strong>Net</strong></a>
+            {% endif %}
+
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+
+            {% if user.is_authenticated %}
+                <form class="navbar-form navbar-right">
+
+                    <ul class="nav navbar-nav">
+                        <li ><a href="{% url 'base_dashboard' %}">Home</a></li>
+                        {% if user.userprofile.is_admin %}
+                            <li class="dropdown"> <!--  ADMIN DROPDOWN  -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Controls<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+
+                                    <li><a href="{% url 'add_nurse' %}">Add Nurse</a></li>
+
+                                    <li><a href="{% url 'add_doctor' %}">Add Doctor</a></li>
+
+                                    <li><a href="{% url 'add_admin' %}">Add Admin</a></li>
+
+                                    <li><a href="{% url 'add_hospital' %}">Add Hospital</a></li>
+
+                                    <li><a href="{% url 'view_logs' %}">View Logs</a></li>
+
+                                    <li><a href="{% url 'system_statistics' %}">System Statistics</a></li>
+
+                                </ul>
+                            </li>
+                        {% endif %}
+                        <li class="dropdown"> <!--  MY INFO DROPDOWN  -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username.title }}'s Info<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="{% url 'edit_basic_info' %}">Edit Basic Information</a></li>
+
+                                {% if user.userprofile.is_patient %}
+                                    <li><a href="{% url 'edit_medical_info' %}">Edit Medical Information</a></li>
+                                    <li><a href="{% url 'view_insurances' %}">View Insurance Information</a></li>
+                                {% endif %}
+
+                            </ul>
+                        </li>
+                        <li class="dropdown"> <!--  APPOINTMENTS DROPDOWN  -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Appointments<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'create_appointment' %}">Create Appointment</a></li>
+                                <li><a href="{% url 'view_appointments' %}">View Appointments</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="{% url 'all' %}">Message Center</a></li>
+
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Patient Actions<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% if user.userprofile.is_nurse or user.userprofile.is_doctor %}
+                                        <li><a href="{% url 'view_all_patients' %}">Search Patient</a></li>
+                                        <li><a href="{% url 'admit_patient' %}">Admit Patient</a></li>
+                                    {% endif %}
+                                    {% if user.userprofile.is_admin or user.userprofile.is_doctor %}
+                                        <li><a href="{% url 'view_all_patients' %}">Search Patient</a></li>
+                                        <li><a href="{% url 'patient_transfer' %}">Transfer Patient</a></li>
+                                    {% endif %}
+                                    {% if user.userprofile.is_patient %}
+                                        <li><a href="{% url 'export_data' %}">Export Data</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+
+
+                        {% if user.userprofile.is_doctor or user.userprofile.is_nurse %}
+                            <li><a href="{% url 'prescriptions' %}">Prescriptions</a></li>
+                        {% endif %}
+
+                        <li><a href="{% url 'log_out' %}">Log Out</a></li>
+                    </ul>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</nav>

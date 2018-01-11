@@ -1,0 +1,30 @@
+<nav class="navbar navbar-message-center">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'all' %}">health<strong>Net</strong> | Messenger</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li
+                        {% if display == "all" or display == "unread" or display == "read" %}
+                            style="-webkit-text-fill-color:#122b40; background-color: #d9edf7"
+                        {% endif %} class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Inbox <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li {% if display == "all" %}class="active" {% endif %}><a href="{% url 'all' %}">All Messages</a></li>
+                        <li {% if display == "unread" %}class="active" {% endif %}><a href="{% url 'unread' %}">Unread Messages</a></li>
+                        <li {% if display == "read" %}class="active" {% endif %}><a href="{% url 'read' %}">Read Messages</a></li>
+                    </ul>
+                </li>
+                <li {% if display == "sent" %}class="active" {% endif %}><a href="{% url 'sent' %}">Sent</a></li>
+                <li {% if display == "compose" %}class="active" {% endif %}><a href="{% url 'compose' %}">Compose</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

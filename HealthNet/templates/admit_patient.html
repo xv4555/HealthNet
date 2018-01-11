@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Admit Patient {% endblock %}
+{% block extra %}
+    <link rel="stylesheet" href="{% static 'admit_patient.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form-wrap" id="admitted_patients">
+
+        <div class="col-md-2 col-md-offset-1">
+            <legend>All Patients</legend>
+
+            {% for stay  in all_stays %}
+                <form action="{% url 'discharge_patient' id=stay.id %}" method="post" accept-charset="utf-8" class="form" role="form">
+                    {% csrf_token %}
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ stay.patient.user.last_name }}, {{stay.patient.user.first_name}}</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>Admitted:</label>
+                            {{ stay.admission }}
+
+                            <br>
+
+                            <label>Hospital:</label>
+                            {{ stay.hospital.name }}
+
+                            <br>
+
+                            <label>Doctor:</label>
+                            {{ stay.doctor.get_full_name }}
+
+                            <br>
+
+                            <label>Nurse:</label>
+                            {{ stay.nurse.get_full_name }}
+
+                        </div>
+                    </div>
+
+                    {% if user.userprofile.is_doctor %}
+                    <input type="hidden" name="patient_id" value="{{ stay.patient.id }}"/>
+                    <button class="btn btn-success" type="submit">Discharge</button>
+                    <br>
+                    {% endif %}
+                    <br>
+                </form>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-2 col-md-offset-1">
+            <legend>Your Patients</legend>
+
+            {% for stay in your_stays %}
+                <form action="{% url 'discharge_patient' id=stay.id %}" method="post" accept-charset="utf-8" class="form" role="form">
+                    {% csrf_token %}
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ stay.patient.user.last_name }}, {{ stay.patient.user.first_name }}</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>Admitted:</label>
+                            {{ stay.admission }}
+
+                            <br>
+
+                            <label>Hospital:</label>
+                            {{ stay.hospital.name }}
+
+                            <br>
+
+                            {% if user.userprofile.is_doctor %}
+                                <label>Nurse:</label>
+                                {{ stay.nurse.get_full_name }}
+                            {% elif user.userprofile.is_nurse %}
+                                <label>Doctor:</label>
+                                {{ stay.doctor.get_full_name }}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    {% if user.userprofile.is_doctor %}
+                        <input type="hidden" name="patient_id" value="{{ stay.patient.id }}"/>
+                        <button class="btn btn-info" type="submit">Discharge</button>
+                        <br>
+                    {% endif %}
+
+                    <br>
+                </form>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-2 col-md-offset-1">
+            <legend>Archives</legend>
+
+            {% for stay in archives %}
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ stay.patient.user.last_name }}, {{ stay.patient.user.first_name }}</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>Admitted:</label>
+                            {{ stay.admission }}
+
+                            <br>
+
+                            <label>Discharged:</label>
+                            {{ stay.discharge }}
+
+                            <br>
+
+                            <label>Hospital:</label>
+                            {{ stay.hospital.name }}
+
+                            <br>
+
+                            {% if user.userprofile.is_doctor %}
+                                <label>Nurse:</label>
+                                {{ stay.nurse.get_full_name }}
+                            {% elif user.userprofile.is_nurse %}
+                                <label>Doctor:</label>
+                                {{ stay.doctor.get_full_name }}
+                            {% endif %}
+
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-2 col-md-offset-1">
+            <legend>Admit Patient</legend>
+            <form action="{% url 'admit_patient' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% csrf_token %}
+
+                <label>Patient</label>
+                <select name="patient" class="form-control" required>
+                    <option value="" selected>Select Patient</option>
+                    {% for patient in patients %}
+                        <option value="{{ patient.id }}">{{ patient.get_full_name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+
+                {% if user.userprofile.is_nurse %}
+
+                    <label>Doctor</label>
+                    <select name="doctor" class="form-control" required>
+                        <option value="" selected>Select Doctor</option>
+                        {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}">{{ doctor.get_full_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                {% endif %}
+
+                {% if user.userprofile.is_doctor %}
+
+                    <label>Nurse</label>
+                    <select name="nurse" class="form-control" required>
+                        <option value="" selected>Select Nurse</option>
+                        {% for nurse in nurses %}
+                            <option value="{{ nurse.id }}">{{ nurse.get_full_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                {% endif %}
+
+                <label>Hospital</label>
+                <select name="hospital" class="form-control" required>
+                    <option value="" selected>Select Hospital</option>
+                    {% for hospital in hospitals %}
+                        <option value="{{ hospital.hospital.hospital_id }}">{{ hospital.hospital.name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+
+                <input type="submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

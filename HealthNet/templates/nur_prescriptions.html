@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Prescriptions {% endblock %}
+{% block extra %}
+    <link rel="stylesheet" href="{% static 'admit_patient.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-3 col-md-offset-5">
+        {% if user.userprofile.is_nurse %}
+            <legend>Your Prescriptions</legend>
+            {% for prescription in your_prescriptions %}
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ prescription.name }}</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <label>Patient:</label>
+                        {{ prescription.patient.get_full_name }}
+
+                        <br>
+
+                        <label>Doctor:</label>
+                        {{ prescription.doctor.get_full_name }}
+
+                        <br>
+
+                        <label>Dosage:</label>
+                        {{ prescription.dosage }}
+
+                        <br>
+
+                        <label>Description:</label>
+                        {{ prescription.description }}
+
+                        <br>
+
+                        <label>Instructions:</label>
+                        {{ prescription.instructions }}
+
+                        <br>
+                        <label>Notes:</label>
+                        {{ prescription.notes }}
+
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+{% endblock %}

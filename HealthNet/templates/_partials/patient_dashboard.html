@@ -1,0 +1,15 @@
+<div class="jumbotron">
+      <div class="container">
+       <div class="form-wrap">
+        <div id="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form id="sign-in" action="{% url '#' %}" method="post">
+                    {% include '_partials/messages.html' %}
+                    {% csrf_token %}
+                    <h1>Doctor Dashboard</h1>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

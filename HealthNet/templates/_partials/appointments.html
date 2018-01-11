@@ -1,0 +1,30 @@
+<div data-role="main" class="ui-content">
+    <legend>My Appointments</legend>
+    <br>
+    <ul data-role="listview" data-inset="true">
+        {% for appointment in appointments %}
+            <!---<form action="{% url 'edit_appointment' id=appointment.id %}" method="post" accept-charset="utf-8" class="form" role="form"> -->
+            {% csrf_token %}
+            <div class="panel panel-info">
+                <div class="panel-heading">
+
+                    <h3 class="panel-title">{{ appointment.date }}</h3>
+                </div>
+                <div class="panel-body">
+                    {% if the_user.userprofile.is_admin or the_user.userprofile.is_nurse %}
+                        <h4> Doctor {{ appointment.doctor.get_full_name }} seeing Patient {{ appointment.patient.get_full_name }} </h4>
+                    {% elif the_user.userprofile.is_doctor %}
+                        <h4> Seeing Patient {{ appointment.patient.get_full_name }}</h4>
+                    {%  elif the_user.userprofile.is_patient %}
+                        <h4> Seeing Doctor {{ appointment.doctor.get_full_name }} </h4>
+                    {%  endif %}
+                    <strong>Notes: </strong>
+                    <p>{{ appointment.notes }}</p>
+                    <a href="{% url 'edit_appointment' id=appointment.id %}"><button class="btn btn-primary" type="submit">Edit Appointment</button></a>
+                    <a href="{% url 'cancel_appointment' id=appointment.id %}"><button class="btn btn-danger" type="submit">Cancel Appointment</button></a>
+                </div>
+            </div>
+            <!-- </form> -->
+        {% endfor %}
+    </ul>
+</div>

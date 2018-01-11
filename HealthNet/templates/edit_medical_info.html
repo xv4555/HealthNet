@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Medical Information {% endblock %}
+
+{% block content %}
+    <a href="{% url 'base_dashboard' %}"><button class="btn btn-primary" type="submit"> << Back to Home </button></a>
+    <br>
+ <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'edit_medical_info' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% include '_partials/messages.html' %}
+                {% csrf_token %}
+                <legend>Edit Medical Info</legend>
+                {% if not the_user.is_nurse %}
+                <label>Update height and weight.</label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="text" name="height" value="{{the_user.userprofile.medicalinformation.height}}" class="form-control" required />
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="text" name="weight" value=" {{the_user.userprofile.medicalinformation.weight}}" class="form-control" placeholder="Weight" required />
+                        </div>
+                    </div>
+                    <br>
+                    <label>Sex</label><br>
+                         <div class="radio-inline">
+                             <label>
+                                {% if the_user.userprofile.medicalinformation.sex == 'Male' %}
+                                    <input type="radio" name="sex" value="Male" class="form-control" checked />Male
+                                {% else %}
+                                    <input type="radio" name="sex" value="Male" class="form-control" />Male
+                                {% endif %}
+                             </label>
+                         </div>
+
+                         <div class="radio-inline">
+                             <label>
+                                {% if the_user.userprofile.medicalinformation.sex == 'Female' %}
+                                    <input type="radio" name="sex" value="Female" class="form-control" checked />Female
+                                {% else %}
+                                    <input type="radio" name="sex"  value="Female" class="form-control" />Female
+                                {% endif %}
+                             </label>
+                         </div>
+                    <br><br>
+                    <label>Current Medications</label>
+                        <input type="text" name="medications" value="{{ the_user.userprofile.medicalinformation.medications }}" class="form-control" />
+                    <br>
+                    <label>Allergies</label>
+                        <input type="text" name="allergies" value="{{ the_user.userprofile.medicalinformation.allergies }}" class="form-control"/>
+                    <br>
+                    <label>Existing Medical Conditions</label>
+                        <input type="text" name="medical_conditions" value="{{ the_user.userprofile.medicalinformation.medical_conditions }}" class="form-control"/>
+                    <br>
+                    <label>Family History</label>
+                        <input type="text" name="family_history" value="{{ the_user.userprofile.medicalinformation.family_history }}" class="form-control"/>
+                    <br>
+                    <label>Additional Information</label>
+                        <input type="text" name="additional_info" value="{{ the_user.userprofile.medicalinformation.additional_info }}" class="form-control"/>
+                    <br>
+
+                    <br>
+                    <label>Primary Hospital</label>
+                    <select name="primary_hospital" class="form-control" required>
+                        <option value="{{ the_user.userprofile.medicalinformation.primary_hospital.hospital_id }}" selected>
+                            {{ the_user.userprofile.medicalinformation.primary_hospital.name }}</option>
+                        {% for hospital in hospitals %}
+                            <option value={{ hospital.hospital_id }}>{{ hospital.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                    <button class="btn btn-primary" type="submit">Finish</button>
+
+                <br>
+                {% endif %}
+            </form>
+        </div>
+ </div>
+
+
+{% endblock %}

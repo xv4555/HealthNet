@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Appointment {% endblock %}
+
+{% block content %}
+    <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'create_appointment' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% include '_partials/messages.html' %}
+                {% csrf_token %}
+
+                <legend>Create an Appointment</legend>
+
+                {% if the_user.userprofile.is_doctor %}
+                    <label>Select Patient</label>
+                    <select name="patient" class="form-control" required>
+                        <option value="" selected>Select Patient</option>
+                        {% for user in users %}
+                            {% if user.userprofile.is_patient %}
+                                <option value="{{ user.pk }}">{{ user.userprofile.get_full_name }}</option>
+                            {% endif%}
+                        {% endfor %}
+                    </select>
+                {% elif the_user.userprofile.is_patient %}
+                    <label>Select Doctor</label>
+                    <select name="doctor" class="form-control" required>
+                        <option value="" selected>Select Doctor</option>
+                        {% for user in users %}
+                            {% if user.userprofile.is_doctor %}
+                                <option value="{{ user.pk }}">{{ user.userprofile.get_full_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                <br>
+
+                <label>Date and Time</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class='input-group' id='datetimepicker'>
+                                <input type='date' class="form-control" name="date" value="{{ date }}" required/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group' id='datetimepicker'>
+                                <input type='time' class="form-control" name="time" value="{{ time }}" required/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <h4>Notes</h4>
+                                <textarea name="notes" rows="10" cols="75"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-md-4">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+                <br>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

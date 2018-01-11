@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Message Center {% endblock %}
+{% block extra %}
+    <link rel="stylesheet" href="{% static 'message_center.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    {% include '_partials/message_center_nav.html' %}
+    <a href="{% url 'base_dashboard' %}"><button class="btn btn-primary" type="submit"> << Back to Home </button></a>
+    <br>
+    <div class="container"></div>
+    {% include '_partials/messages.html' %}
+    {% if display == "compose" %}
+        <div class="col-md-5 col-md-offset-2">
+            <legend>New Message</legend>
+            <form action="{% url 'send_message' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% csrf_token %}
+                <label>To</label>
+                <select name="user_to" class="form-control">
+                    <option value="" selected>Select User</option>
+                    {% for user in the_users %}
+                        <option value="{{ user.id }}">{{ user.get_full_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Subject</label>
+                <input type="text" name="subject" class="form-control" placeholder="Subject" required />
+
+                <label>Message</label>
+                <textarea name="message" rows="10" cols="75"></textarea>
+                <br>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+         <div class="col-md-5 col-md-offset-2">
+        <form action="{% url display %}" method="post" accept-charset="utf-8" class="form" role="form">
+            {% csrf_token %}
+            <legend>
+                {% if display == "sent" %}Sent Messages
+                {% elif display == "all" %}All Read and Unread Messages
+                {% elif display == "read" %}Read Messages
+                {% elif display == "unread" %}Unread Messages
+                {% endif %}
+                {{ display_id }}
+            </legend>
+            <ul class="list-group">
+                {% for m in msgs %}
+                    <li class="list-group-item">
+                        <a href="{% url 'view_message' message_id=m.id %}" >
+                            {% if not m.read %}
+                                <h5 class="list-group-item-heading" >
+                                    {{ m.time }}
+                                    {% if display == "sent" %}{{ m.user_to }}{% else %}{{ m.user_from }}{% endif %}
+                                    {{ m.subject }}
+                                </h5>
+                            {% else %}
+                                <h5 class="list-group-item-heading" style="-webkit-text-fill-color: grey">
+                                    {{ m.time }}
+                                    {% if display == "sent" %}{{ m.user_to }}{% else %}{{ m.user_from }}{% endif %}
+                                    {{ m.subject }}
+                                </h5>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </form>
+        </div>
+    {% endif %}
+ </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} View Appoinments {% endblock %}
+
+{% block content %}
+    <a href="{% url 'base_dashboard' %}"><button class="btn btn-primary" type="submit"> << Back to Home </button></a>
+    <br>
+    <div>
+    {% include '_partials/messages.html' %}
+
+        <div class="form-wrap">
+            <div class="col-md-6 col-md-offset-3">
+                {% include '_partials/appointments.html' %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

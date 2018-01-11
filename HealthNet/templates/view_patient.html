@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %} Patient Info {% endblock %}
+
+{% block extra %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="static/base_dashboard.css">
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'view_all_patients' %}"><button class="btn btn-primary" type="submit"><< Back to Patient Search</button></a>
+    <legend><h2>Viewing info for {{ the_patient.get_full_name }}</h2></legend>
+    <div class="form-wrap">
+        <!-- <div class="col-md-7 col-md-offset-2"> -->
+
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ the_patient.get_full_name }}</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <img src="{% static "bad-profile-pic-2.jpeg" %}" class="img-thumbnail" alt="My image"/>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Basic Info</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>Username: </strong>{{ the_user.username }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Name: </strong>{{ the_patient.get_full_name }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Email: </strong>{{ the_user.email }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Phone: </strong>{{ the_patient.phone_number }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-5 col-lg-offset-0">
+
+                    <div class="panel panel-info">
+
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Medical Information</h3>
+                        </div>
+
+
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <h4 class="list-group-item-heading">
+                                    General Information
+                                </h4>
+                                <li class="list-group-item">
+                                    <strong>Height: </strong>{{ the_patient.medicalinformation.height }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Weight: </strong>{{ the_patient.medicalinformation.weight }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Sex: </strong>{{ the_patient.medicalinformation.sex }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Medications: </strong>{{ the_patient.medicalinformation.medications }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Allergies: </strong>{{ the_patient.medicalinformation.allergies }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Existing Medical Conditions: </strong>{{ the_patient.medicalinformation.medical_conditions }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Family History: </strong>{{ the_patient.medicalinformation.family_history }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Additional Information: </strong>{{ the_patient.medicalinformation.additional_info }}
+                                </li>
+                            </ul>
+                            <div class="col-sm-5 col-sm-offset-4" >
+                                <a href="{% url 'edit_patient_medical_info' patient_id=the_patient.pk %}">
+                                    <button type="button" class="btn btn-md btn-primary">
+                                        Edit
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div><!-- /.col-sm-4 -->
+            </div>
+        <!-- </div> -->
+    </div>
+{% endblock %}

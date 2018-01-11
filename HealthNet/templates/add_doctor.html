@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} Add Doctor to Database {% endblock %}
+
+{% block content %}
+ <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'add_doctor' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% include '_partials/messages.html' %}
+                {% csrf_token %}
+                <legend>Add Doctor</legend>
+                <label>Enter desired username</label>
+                <input type="text" name="username" value="{{ the_user.first_name }}" class="form-control" placeholder="GoTigers666" required />
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ the_user.first_name }}" class="form-control" placeholder="First Name" required />
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ the_user.last_name }}" class="form-control" placeholder="Last Name" required />
+                <label>Email</label>
+                <input type="text" name="email" value="{{ the_user.email }}" class="form-control" placeholder="Email" required />
+                <label>Password</label>
+                <input type="password" name="password" class="form-control password" placeholder="Password"  required = "" />
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control confirm-password" placeholder="Confirm Password" required = "" />
+                <br>
+                <label>Work Hospital</label>
+                {% for hospital in hospitals %}
+                    <br>
+                    <input type="checkbox" name="chosen_hospitals" value="{{ hospital.hospital_id }}">{{ hospital.name }}
+                {% endfor %}
+                <br>
+                <br>
+                <div class="row">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+ </div>
+
+{% endblock %}

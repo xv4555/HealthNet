@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block extra %}
+    <link rel="stylesheet" href="static/base_dashboard.css">
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1 >Welcome Back,  {{ user.first_name }}</h1>
+    </div>
+    <div class="form-wrap">
+        <!-- <div class="col-md-7 col-md-offset-2"> -->
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ user.get_full_name }}</h3>
+                        </div>
+                        <div class="panel-body">
+                            {% load staticfiles %}
+                            <img src="{% static "bad-profile-pic-2.jpeg" %}" class="img-thumbnail" alt="My image"/>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">My Info</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>Username: </strong>{{ user.username }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Name: </strong>{{ user.get_full_name }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Email: </strong>{{ user.email }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Phone: </strong>{{ user.userprofile.phone_number }}
+                                </li>
+                            </ul>
+                            <div class="col-sm-5 col-sm-offset-4" >
+                                <button type="button" class="btn btn-md btn-primary" onclick="location.href='/edit_basic_info'">Edit My Info</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% if not user.userprofile.is_patient%}
+                    <div class="col-lg-5 col-lg-offset-0">
+                        {% include '_partials/appointments.html' %}
+                    </div>
+
+                {% elif user.userprofile.is_patient %}
+                    <div class="col-lg-5 col-lg-offset-0">
+
+                        <div class="panel panel-info">
+
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Medical Information</h3>
+                            </div>
+
+
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    <h4 class="list-group-item-heading">
+                                        General Information
+                                    </h4>
+                                    <li class="list-group-item">
+                                        <strong>Height: </strong>{{ user.userprofile.medicalinformation.height }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Weight: </strong>{{ user.userprofile.medicalinformation.weight }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Sex: </strong>{{ user.userprofile.medicalinformation.sex }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Medications: </strong>{{ user.userprofile.medicalinformation.medications }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Allergies: </strong>{{ user.userprofile.medicalinformation.allergies }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Existing Medical Conditions: </strong>{{ user.userprofile.medicalinformation.medical_conditions }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Family History: </strong>{{ user.userprofile.medicalinformation.family_history }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Additional Information: </strong>{{ user.userprofile.medicalinformation.additional_info }}
+                                    </li>
+                                </ul>
+                                <div class="col-sm-5 col-sm-offset-4" >
+                                    <button onclick="location.href='/edit_medical_info'" type="button" class="btn btn-md btn-primary">Edit Medical Info</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div><!-- /.col-sm-4 -->
+                {% endif %}
+            </div>
+        <!-- </div> -->
+    </div>
+{% endblock %}

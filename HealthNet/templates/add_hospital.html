@@ -1,0 +1,36 @@
+ {% extends 'base.html' %}
+
+{% block title %} Add Hospital to Database {% endblock %}
+
+{% block content %}
+ <div class="form-wrap">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="{% url 'add_hospital' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% include '_partials/messages.html' %}
+                {% csrf_token %}
+                <legend>Add Hospital</legend>
+                <label>Enter Hospital Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter name of hospital here" required />
+
+                <label>Address</label>
+                <input type="text" name="address" class="form-control" placeholder="Address" required />
+
+                <label>City</label>
+                <input type="text" name="city" class="form-control" placeholder="City" required />
+
+                <label>State</label>
+                <input type="text" name="state" class="form-control" placeholder="State" required />
+
+                <label>Zip</label>
+                <input type="text" name="zipcode" class="form-control" placeholder="Zip" required />
+
+                <br>
+                <div class="row">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+
+        </div>
+ </div>
+
+{% endblock %}

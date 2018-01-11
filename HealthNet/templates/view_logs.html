@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Activity Log {% endblock %}
+
+{% block content %}
+    <div class="form-wrap">
+        <div class="col-md-7 col-md-offset-2">
+            <form action="{% url 'view_logs' %}" method="post" accept-charset="utf-8" class="form" role="form">
+                {% include '_partials/messages.html' %} {% csrf_token %}
+                <legend><h2>Activity Log</h2></legend>
+                <p>
+                    {% if keyword %}
+                        <div class="search">
+                            <span class="fa fa-search"></span>
+                            <input type="text" name="search" class="form-control" placeholder="Search"  />
+                        </div>
+                        <br>
+                        <label>Showing {{ num_logs }} results for "{{ keyword }}" </label>
+                    {% else %}
+                        <div class="search">
+                            <span class="fa fa-search"></span>
+                            <input type="text" name="search"  value="{{ keyword }}" class="form-control" placeholder="Search"  />
+                        </div>
+                        <br>
+                        <label>Showing all log entries...</label>
+                    {% endif %}
+                </p>
+                <br>
+                <ul class="list-group">
+                    {% for log in logs %}
+                        <li class="list-group-item">
+                            <a href="{% url 'view_log' log_id=log.id %}">
+                                <h4 class="list-group-item-heading">
+                                    {{log.id }}: Action performed by
+                                    {% if log.user.userprofile %}{{ log.user.userprofile.get_full_name }}
+                                    {% elif not log.user.userprofile %} No UserProfile found {% endif %}
+                                    ({{ log.user }})
+                                </h4>
+                            </a>
+
+                            <p class="list-group-item-text"> <strong>Id:</strong> {{ log.object_id }}</p>
+                            <p class="list-group-item-text"> <strong>Detail:</strong> {{ log.object_repr }}</p>
+                            <p class="list-group-item-text"> <strong>Change:</strong> {{ log.change_message }}</p>
+                            <p class="list-group-item-text"> <strong>Action Flag:</strong> {{ log.action_flag }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </form>
+        </div>
+    </div>
+{% endblock %}
